@@ -42,12 +42,12 @@ class DetailViewController: UIViewController {
     }()
     
     
-    init(with source: CellSource){
+    init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
         titleNews.text = source.title
         imageNews.image = source.image
-        discriptionNews.text = source.discription
-        dateNews.text = source.time
+        discriptionNews.text = source.description
+        dateNews.text = source.pubData
     }
     
     required init?(coder: NSCoder) {
