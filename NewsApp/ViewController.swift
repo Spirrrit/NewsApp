@@ -22,7 +22,6 @@ class ViewController: UIViewController {
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.rowHeight = 200
         setupTableView()
         
         fetchData()

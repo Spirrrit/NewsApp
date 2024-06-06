@@ -12,7 +12,6 @@ struct RSSItem {
     var title: String
     var description: String
     var pubData: String
-//    var image: String
     var image: UIImage?
 }
 
@@ -72,11 +71,8 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentTitle = ""
             currentDescription = ""
             currentpubDate = ""
-//            if currentElement == "rbc_news:image"{
-//                currentTitle = ""
-//            }
-            
         }
+        
 
     }
     
