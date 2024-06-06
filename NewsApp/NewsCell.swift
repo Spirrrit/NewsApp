@@ -76,11 +76,11 @@ class NewsCell: UITableViewCell {
             
             time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
             time.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            time.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
+            time.trailingAnchor.constraint(equalTo: source.leadingAnchor, constant: -10),
             
             source.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
             source.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            source.leadingAnchor.constraint(equalTo: time.trailingAnchor, constant: 20),
+            source.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
         
         ])
