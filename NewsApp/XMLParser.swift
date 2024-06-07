@@ -9,10 +9,13 @@ import Foundation
 import UIKit
 
 struct RSSItem {
+    
+
     var title: String
     var description: String
     var pubData: String
     var image: UIImage?
+    var resource: String
 }
 
 func getImage(str: String) -> UIImage? {
@@ -43,6 +46,11 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = currentpubDate.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
+    private var currentResource: String = "" {
+        didSet {
+            currentResource = currentResource.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
+    }
     private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
     func parseFeed(url: String, completionHandler:(([RSSItem]) -> Void)?){
@@ -66,14 +74,18 @@ class FeedParser: NSObject, XMLParserDelegate {
     
     //MARK: - Parser Delegate
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        
         currentElement = elementName
+        
+        
         if currentElement == "item" {
             currentTitle = ""
             currentDescription = ""
             currentpubDate = ""
+            currentResource = ""
         }
         
-
+        
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
@@ -82,17 +94,22 @@ class FeedParser: NSObject, XMLParserDelegate {
         case "description": currentDescription += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
+//        case "source": currentResource += string
+//        case "author": currentResource += string
         case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(systemName: "questionmark")
-
-        
         default: break
         }
+
+ 
+
+        
     }
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
-            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage)
+            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: currentResource)
             self.rssItems.append(rssItem)
         }
+
     }
     func parserDidEndDocument(_ parser: XMLParser) {
         parserCompletionHandler?(rssItems)

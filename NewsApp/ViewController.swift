@@ -30,12 +30,23 @@ class ViewController: UIViewController {
 
     private func fetchData() {
         let feedParser = FeedParser()
-        feedParser.parseFeed(url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss") { (rssItem) in
-            self.rssItems = rssItem
-            
-            OperationQueue.main.addOperation {
-                self.tableView.reloadSections(IndexSet(integer: 0), with: .left)
+        OperationQueue.current?.addOperation {
+            feedParser.parseFeed(url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss") { (rssItem) in
+                self.rssItems = rssItem
+
+                OperationQueue.main.addOperation {
+                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                }
             }
+            feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/") { (rssItem) in
+                self.rssItems = rssItem
+                OperationQueue.main.addOperation {
+                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                    
+                }
+            }
+            
+
         }
     }
 

@@ -14,7 +14,6 @@
 		B0DCB6C02C10465800F9EE1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0DCB6BF2C10465800F9EE1E /* Assets.xcassets */; };
 		B0DCB6C32C10465800F9EE1E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B0DCB6C22C10465800F9EE1E /* Base */; };
 		B0DCB6CD2C1049F600F9EE1E /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6CC2C1049F600F9EE1E /* NewsCell.swift */; };
-		B0DCB6D12C10584200F9EE1E /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6D02C10584200F9EE1E /* Resource.swift */; };
 		B0DCB6D32C106A7600F9EE1E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6D22C106A7600F9EE1E /* DetailViewController.swift */; };
 		B0DCB6D52C11962700F9EE1E /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6D42C11962700F9EE1E /* XMLParser.swift */; };
 /* End PBXBuildFile section */
@@ -29,7 +28,6 @@
 		B0DCB6C22C10465800F9EE1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B0DCB6C42C10465800F9EE1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0DCB6CC2C1049F600F9EE1E /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
-		B0DCB6D02C10584200F9EE1E /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		B0DCB6D22C106A7600F9EE1E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		B0DCB6D42C11962700F9EE1E /* XMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,7 +68,6 @@
 				B0DCB6B72C10465500F9EE1E /* ViewController.swift */,
 				B0DCB6D22C106A7600F9EE1E /* DetailViewController.swift */,
 				B0DCB6CC2C1049F600F9EE1E /* NewsCell.swift */,
-				B0DCB6D02C10584200F9EE1E /* Resource.swift */,
 				B0DCB6BF2C10465800F9EE1E /* Assets.xcassets */,
 				B0DCB6C12C10465800F9EE1E /* LaunchScreen.storyboard */,
 				B0DCB6C42C10465800F9EE1E /* Info.plist */,
@@ -153,7 +150,6 @@
 				B0DCB6B82C10465500F9EE1E /* ViewController.swift in Sources */,
 				B0DCB6B42C10465500F9EE1E /* AppDelegate.swift in Sources */,
 				B0DCB6BE2C10465500F9EE1E /* NewsApp.xcdatamodeld in Sources */,
-				B0DCB6D12C10584200F9EE1E /* Resource.swift in Sources */,
 				B0DCB6CD2C1049F600F9EE1E /* NewsCell.swift in Sources */,
 				B0DCB6B62C10465500F9EE1E /* SceneDelegate.swift in Sources */,
 				B0DCB6D32C106A7600F9EE1E /* DetailViewController.swift in Sources */,
