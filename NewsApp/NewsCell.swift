@@ -80,10 +80,9 @@ class NewsCell: UITableViewCell {
             time.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10),
             time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
             time.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            time.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            
-//            source.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10),
-//            source.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
+            time.leadingAnchor.constraint(equalTo: source.trailingAnchor, constant: 10),
+            time.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+    
             source.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             source.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             source.trailingAnchor.constraint(equalTo: time.leadingAnchor, constant: -10),
@@ -95,7 +94,7 @@ class NewsCell: UITableViewCell {
         title.text = cellSource.title
         discription.text = cellSource.description
         time.text = cellSource.pubData
-//        image.image = cellSource.image
+        image.image = cellSource.image
         source.text = cellSource.resource
         
     }

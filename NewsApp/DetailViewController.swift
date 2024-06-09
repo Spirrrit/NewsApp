@@ -41,6 +41,7 @@ class DetailViewController: UIViewController {
         return image
     }()
     
+    lazy var scrollView = UIScrollView()
     
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
@@ -57,13 +58,16 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
-        [titleNews, imageNews, dateNews, discriptionNews].forEach {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: nil, action: nil)
+            
+        
+         [titleNews, imageNews, dateNews, discriptionNews].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
         
         NSLayoutConstraint.activate([
+
             titleNews.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             titleNews.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
             titleNews.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),

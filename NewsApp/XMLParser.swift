@@ -9,13 +9,17 @@ import Foundation
 import UIKit
 
 struct RSSItem {
-    
-
     var title: String
     var description: String
     var pubData: String
     var image: UIImage?
     var resource: String
+}
+enum SourceNews: String {
+    case rbk = "РБК"
+    case rambler = "Рамблер"
+    case lenta = "Лента.ру"
+    case none = "Ресурс"
 }
 
 func getImage(str: String) -> UIImage? {
@@ -30,12 +34,12 @@ class FeedParser: NSObject, XMLParserDelegate {
     private var rssItems: [RSSItem] = []
     private var currentElement: String = ""
     private var currentImage: UIImage?
+    private var sourceNews: String = ""
     private var currentTitle: String = "" {
         didSet {
             currentTitle = currentTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
-    
     private var currentDescription: String = "" {
         didSet {
             currentDescription = currentDescription.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -51,25 +55,32 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentResource = currentResource.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
+    
     private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
-    func parseFeed(url: String, completionHandler:(([RSSItem]) -> Void)?){
+    func parseFeed(url: [String], resource: SourceNews , completionHandler:(([RSSItem]) -> Void)?){
         self.parserCompletionHandler = completionHandler
+        self.sourceNews = resource.rawValue
         
-        let request = URLRequest(url: URL(string: url)!)
-        let urlSession = URLSession.shared
-        let task = urlSession.dataTask(with: request) { (data, response, error) in
-            guard let data = data else {
-                if let error = error {
-                    print(error.localizedDescription)
+        
+        
+        for i in url {
+            let request = URLRequest(url: URL(string: i)!)
+            let urlSession = URLSession.shared
+            let task = urlSession.dataTask(with: request) { (data, response, error) in
+                guard let data = data else {
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                    return
                 }
-                return
+                let parser = XMLParser(data: data)
+                parser.delegate = self
+                parser.parse()
             }
-            let parser = XMLParser(data: data)
-            parser.delegate = self
-            parser.parse()
+            task.resume()
         }
-        task.resume()
+        
     }
     
     //MARK: - Parser Delegate
@@ -77,15 +88,13 @@ class FeedParser: NSObject, XMLParserDelegate {
         
         currentElement = elementName
         
-        
         if currentElement == "item" {
             currentTitle = ""
             currentDescription = ""
             currentpubDate = ""
             currentResource = ""
+            currentImage = nil
         }
-        
-        
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
@@ -94,19 +103,13 @@ class FeedParser: NSObject, XMLParserDelegate {
         case "description": currentDescription += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
-//        case "source": currentResource += string
-//        case "author": currentResource += string
-        case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(systemName: "questionmark")
+        case "rbc_news:url": currentImage = getImage(str: string) ?? nil
         default: break
         }
-
- 
-
-        
     }
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
-            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: currentResource)
+            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: sourceNews)
             self.rssItems.append(rssItem)
         }
 

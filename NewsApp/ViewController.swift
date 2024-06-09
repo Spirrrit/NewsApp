@@ -11,6 +11,10 @@ class ViewController: UIViewController {
 
 //    var resources = Resource.makeSource()
     private var rssItems: [RSSItem]?
+    private var urls: [String] = [
+        "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
+        "https://news.rambler.ru/rss/world/"
+    ]
     
     let tableView: UITableView = .init()
     
@@ -24,32 +28,32 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         
-        fetchData()
-        
+            fetchData()
     }
-
+    
     private func fetchData() {
+
+        
         let feedParser = FeedParser()
-        OperationQueue.current?.addOperation {
-            feedParser.parseFeed(url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss") { (rssItem) in
+            feedParser.parseFeed(url: self.urls, resource: .none) { (rssItem) in
                 self.rssItems = rssItem
-
+                
                 OperationQueue.main.addOperation {
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
                 }
             }
-            feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/") { (rssItem) in
-                self.rssItems = rssItem
-                OperationQueue.main.addOperation {
-                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-                    
-                }
-            }
-            
-
-        }
+//        queue1.async {
+//            sleep(2)
+//            feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/", resource: .rambler) { (rssItem) in
+//                self.rssItems = rssItem
+//                
+//                OperationQueue.main.addOperation {
+//                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+//                    
+//                }
+//            }
+//        }
     }
-
 }
 
 extension ViewController {
@@ -96,6 +100,7 @@ extension ViewController: UITableViewDataSource {
         if let item = rssItems?[indexPath.item] {
             cell.configure(cellSource: item)
         }
+        
         return cell
         
         
