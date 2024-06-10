@@ -41,7 +41,8 @@ class DetailViewController: UIViewController {
         return image
     }()
     
-    lazy var scrollView = UIScrollView()
+    private lazy var scrollView = UIScrollView()
+    
     
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
@@ -58,32 +59,43 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: nil, action: nil)
-            
+
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        view.addSubview(scrollView)
         
-         [titleNews, imageNews, dateNews, discriptionNews].forEach {
+        [titleNews, imageNews, dateNews, discriptionNews].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            scrollView.addSubview($0)
         }
         
         NSLayoutConstraint.activate([
-
-            titleNews.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            titleNews.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
-            titleNews.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            imageNews.topAnchor.constraint(equalTo: titleNews.bottomAnchor, constant: 10),
-            imageNews.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
-            imageNews.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            titleNews.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            titleNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            titleNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            titleNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            imageNews.topAnchor.constraint(equalTo: titleNews.bottomAnchor, constant: 20),
+            imageNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            imageNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             imageNews.heightAnchor.constraint(equalToConstant: 200),
+            imageNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            dateNews.topAnchor.constraint(equalTo: imageNews.bottomAnchor, constant: 15),
-            dateNews.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
-            dateNews.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            dateNews.topAnchor.constraint(equalTo: imageNews.bottomAnchor, constant: 20),
+            dateNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            dateNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            dateNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            discriptionNews.topAnchor.constraint(equalTo: dateNews.bottomAnchor, constant: 10),
-            discriptionNews.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
-            discriptionNews.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            discriptionNews.topAnchor.constraint(equalTo: dateNews.bottomAnchor, constant: 20),
+            discriptionNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            discriptionNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            discriptionNews.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            discriptionNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             
         ])
