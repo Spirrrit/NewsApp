@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B02F13592C1857CF009BF49D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F13582C1857CF009BF49D /* Model.swift */; };
 		B0DCB6B42C10465500F9EE1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */; };
 		B0DCB6B62C10465500F9EE1E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */; };
 		B0DCB6B82C10465500F9EE1E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B72C10465500F9EE1E /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B02F13582C1857CF009BF49D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B0DCB6B02C10465500F9EE1E /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			children = (
 				B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */,
 				B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */,
+				B02F13582C1857CF009BF49D /* Model.swift */,
 				B0DCB6D42C11962700F9EE1E /* XMLParser.swift */,
 				B0DCB6B72C10465500F9EE1E /* ViewController.swift */,
 				B0DCB6D22C106A7600F9EE1E /* DetailViewController.swift */,
@@ -153,6 +156,7 @@
 				B0DCB6CD2C1049F600F9EE1E /* NewsCell.swift in Sources */,
 				B0DCB6B62C10465500F9EE1E /* SceneDelegate.swift in Sources */,
 				B0DCB6D32C106A7600F9EE1E /* DetailViewController.swift in Sources */,
+				B02F13592C1857CF009BF49D /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

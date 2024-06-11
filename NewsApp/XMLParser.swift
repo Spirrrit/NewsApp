@@ -8,38 +8,6 @@
 import Foundation
 import UIKit
 
-struct RSSItem {
-    var title: String
-    var description: String
-    var pubData: String
-    var image: UIImage?
-    var resource: String
-    var link: String
-}
-enum SourceNews: String {
-    case rbk = "РБК"
-    case rambler = "Рамблер"
-    case lenta = "Лента.ру"
-    case none = "Ресурс"
-}
-struct NewsResource {
-    static func getSourceLink() -> [String]{
-        let links = [
-            "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
-            "https://news.rambler.ru/rss/world/"
-        ]
-        return links
-    }
-}
-
-func getImage(str: String) -> UIImage? {
-    let url = URL(string: str)
-    if let data = try? Data(contentsOf: url!){
-        return UIImage(data: data)
-    }
-    return UIImage(systemName: "questionmark")
-}
-
 class FeedParser: NSObject, XMLParserDelegate {
     private var rssItems: [RSSItem] = []
     private var currentElement: String = ""
@@ -68,15 +36,12 @@ class FeedParser: NSObject, XMLParserDelegate {
     }
     
     private var currentLink: String = ""
-    
-    
     private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
     func parseFeed(url: [String], resource: SourceNews , completionHandler:(([RSSItem]) -> Void)?){
+        
         self.parserCompletionHandler = completionHandler
         self.sourceNews = resource.rawValue
-        
-        
         
         for i in url {
             let request = URLRequest(url: URL(string: i)!)
@@ -94,14 +59,20 @@ class FeedParser: NSObject, XMLParserDelegate {
             }
             task.resume()
         }
-        
+    }
+    
+    func getImage(str: String) -> UIImage? {
+        let url = URL(string: str)
+        if let data = try? Data(contentsOf: url!){
+            return UIImage(data: data)
+        }
+        return UIImage(systemName: "questionmark")
     }
     
     //MARK: - Parser Delegate
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         
         currentElement = elementName
-        
         if currentElement == "item" {
             currentTitle = ""
             currentDescription = ""
@@ -116,7 +87,8 @@ class FeedParser: NSObject, XMLParserDelegate {
         switch currentElement {
         case "title": currentTitle += string
         case "description": currentDescription += string
-        case "pdalink": currentLink += string
+//        case "pdalink": currentLink += string
+        case "link": currentLink += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
         case "rbc_news:url": currentImage = getImage(str: string) ?? nil
@@ -128,7 +100,6 @@ class FeedParser: NSObject, XMLParserDelegate {
             let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: sourceNews, link: currentLink)
             self.rssItems.append(rssItem)
         }
-
     }
     func parserDidEndDocument(_ parser: XMLParser) {
         parserCompletionHandler?(rssItems)
