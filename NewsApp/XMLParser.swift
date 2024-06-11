@@ -14,12 +14,22 @@ struct RSSItem {
     var pubData: String
     var image: UIImage?
     var resource: String
+    var link: String
 }
 enum SourceNews: String {
     case rbk = "РБК"
     case rambler = "Рамблер"
     case lenta = "Лента.ру"
     case none = "Ресурс"
+}
+struct NewsResource {
+    static func getSourceLink() -> [String]{
+        let links = [
+            "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
+            "https://news.rambler.ru/rss/world/"
+        ]
+        return links
+    }
 }
 
 func getImage(str: String) -> UIImage? {
@@ -35,6 +45,7 @@ class FeedParser: NSObject, XMLParserDelegate {
     private var currentElement: String = ""
     private var currentImage: UIImage?
     private var sourceNews: String = ""
+    
     private var currentTitle: String = "" {
         didSet {
             currentTitle = currentTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -55,6 +66,9 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentResource = currentResource.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
+    
+    private var currentLink: String = ""
+    
     
     private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
@@ -94,6 +108,7 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = ""
             currentResource = ""
             currentImage = nil
+            currentLink = ""
         }
     }
     
@@ -101,6 +116,7 @@ class FeedParser: NSObject, XMLParserDelegate {
         switch currentElement {
         case "title": currentTitle += string
         case "description": currentDescription += string
+        case "pdalink": currentLink += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
         case "rbc_news:url": currentImage = getImage(str: string) ?? nil
@@ -109,7 +125,7 @@ class FeedParser: NSObject, XMLParserDelegate {
     }
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
-            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: sourceNews)
+            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: sourceNews, link: currentLink)
             self.rssItems.append(rssItem)
         }
 

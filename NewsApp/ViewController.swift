@@ -11,10 +11,7 @@ class ViewController: UIViewController {
 
 //    var resources = Resource.makeSource()
     private var rssItems: [RSSItem]?
-    private var urls: [String] = [
-        "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
-        "https://news.rambler.ru/rss/world/"
-    ]
+    private var urls = NewsResource.getSourceLink()
     
     let tableView: UITableView = .init()
     
@@ -42,17 +39,6 @@ class ViewController: UIViewController {
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
                 }
             }
-//        queue1.async {
-//            sleep(2)
-//            feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/", resource: .rambler) { (rssItem) in
-//                self.rssItems = rssItem
-//                
-//                OperationQueue.main.addOperation {
-//                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    
-//                }
-//            }
-//        }
     }
 }
 
