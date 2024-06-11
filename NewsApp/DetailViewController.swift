@@ -79,7 +79,12 @@ class DetailViewController: UIViewController {
     
     //MARK: - ShareButtonSetup
     @objc func shareButton(){
-        print("shareButtonDidTaped")
+        
+        if let urladdress = storeUrlForBrowser {
+            let items: [String] = [urladdress]
+            let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            present(avc, animated: true)
+        }
     }
     
     @objc func browserButtonTap(){
