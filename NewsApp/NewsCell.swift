@@ -63,29 +63,31 @@ class NewsCell: UITableViewCell {
         NSLayoutConstraint.activate([
             
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+//            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            title.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             discription.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 5),
-            discription.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+//            discription.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            discription.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
             discription.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
-            image.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
+            image.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            image.bottomAnchor.constraint(equalTo: time.topAnchor, constant: -15),
-            image.heightAnchor.constraint(equalToConstant: 200),
+            image.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: -15),
+            image.heightAnchor.constraint(equalToConstant: 100),
+            image.widthAnchor.constraint(equalToConstant: 100),
 
             
-            time.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10),
+            time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
             time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
             time.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             time.leadingAnchor.constraint(equalTo: source.trailingAnchor, constant: 10),
             time.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
     
+            source.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20),
             source.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             source.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            source.trailingAnchor.constraint(equalTo: time.leadingAnchor, constant: -10),
             
 
         ])

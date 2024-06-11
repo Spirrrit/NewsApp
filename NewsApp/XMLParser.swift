@@ -78,7 +78,7 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentDescription = ""
             currentpubDate = ""
             currentResource = ""
-            currentImage = nil
+            currentImage = UIImage(systemName: "photo")
             currentLink = ""
         }
     }
@@ -91,7 +91,7 @@ class FeedParser: NSObject, XMLParserDelegate {
         case "link": currentLink += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
-        case "rbc_news:url": currentImage = getImage(str: string) ?? nil
+        case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(systemName: "photo")
         default: break
         }
     }
