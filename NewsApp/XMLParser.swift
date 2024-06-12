@@ -66,7 +66,7 @@ class FeedParser: NSObject, XMLParserDelegate {
         if let data = try? Data(contentsOf: url!){
             return UIImage(data: data)
         }
-        return UIImage(systemName: "questionmark")
+        return UIImage(named: "icon")
     }
     
     //MARK: - Parser Delegate
@@ -78,7 +78,7 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentDescription = ""
             currentpubDate = ""
             currentResource = ""
-            currentImage = UIImage(systemName: "photo")
+            currentImage = UIImage(named: "icon")
             currentLink = ""
         }
     }
@@ -91,7 +91,7 @@ class FeedParser: NSObject, XMLParserDelegate {
         case "link": currentLink += string
         case "rbc_news:full-text": currentDescription += string
         case "pubDate": currentpubDate += string
-        case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(systemName: "photo")
+        case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(named: "icon")
         default: break
         }
     }

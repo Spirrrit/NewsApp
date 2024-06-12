@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = .white
         title = "Главная"
         
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
@@ -28,8 +28,7 @@ class ViewController: UIViewController {
     private func fetchData() {
         let feedParser = FeedParser()
         feedParser.parseFeed(url: self.urls, resource: .none) { (rssItem) in
-            self.rssItems = rssItem
-            
+            self.rssItems = rssItem            
             OperationQueue.main.addOperation {
                 self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
@@ -55,7 +54,7 @@ extension ViewController {
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let detail = rssItems?[indexPath.item] {
-            navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
+                navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
         }
     }
 }

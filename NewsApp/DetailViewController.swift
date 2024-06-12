@@ -15,7 +15,7 @@ class DetailViewController: UIViewController {
     
     lazy var titleNews: UILabel = {
         let lable = UILabel()
-        lable.font = .boldSystemFont(ofSize: 30)
+        lable.font = .boldSystemFont(ofSize: 24)
         lable.numberOfLines = 0
         lable.text  = ""
         return lable
@@ -58,7 +58,11 @@ class DetailViewController: UIViewController {
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
         titleNews.text = source.title
-        imageNews.image = source.image
+        if source.image !== UIImage(named: "icon") {
+            imageNews.image = source.image
+        } else {
+            imageNews.image = nil
+        }
         discriptionNews.text = source.description
         dateNews.text = source.pubData
         storeUrlForBrowser = source.link
@@ -79,7 +83,6 @@ class DetailViewController: UIViewController {
     
     //MARK: - ShareButtonSetup
     @objc func shareButton(){
-        
         if let urladdress = storeUrlForBrowser {
             let items: [String] = [urladdress]
             let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)
@@ -88,10 +91,7 @@ class DetailViewController: UIViewController {
     }
     
     @objc func browserButtonTap(){
-        
         guard let urladdress = storeUrlForBrowser else { return }
-        print(urladdress)
-        
         if let url = URL(string: urladdress ) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
@@ -103,11 +103,15 @@ class DetailViewController: UIViewController {
 //MARK: - SetupUI
 extension DetailViewController {
     func setupUI(){
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
         view.addSubview(scrollView)
+        
+        if imageNews.image !== nil {
+            imageNews.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        }
         
         [titleNews, imageNews, dateNews, discriptionNews, browserButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +122,7 @@ extension DetailViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             titleNews.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
             titleNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -128,7 +132,6 @@ extension DetailViewController {
             imageNews.topAnchor.constraint(equalTo: titleNews.bottomAnchor, constant: 20),
             imageNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             imageNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imageNews.heightAnchor.constraint(equalToConstant: 200),
             imageNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             dateNews.topAnchor.constraint(equalTo: imageNews.bottomAnchor, constant: 20),
@@ -139,7 +142,6 @@ extension DetailViewController {
             discriptionNews.topAnchor.constraint(equalTo: dateNews.bottomAnchor, constant: 20),
             discriptionNews.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             discriptionNews.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            //            discriptionNews.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             discriptionNews.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             browserButton.topAnchor.constraint(equalTo: discriptionNews.bottomAnchor, constant: 20),
