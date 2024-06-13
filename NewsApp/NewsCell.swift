@@ -29,10 +29,10 @@ class NewsCell: UITableViewCell {
 
         return image
     }()
-    let time: UILabel = {
+    let date: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 14)
-        lable.textColor = .lightGray
+        lable.textColor = .gray
         return lable
     }()
     let source: UILabel = {
@@ -54,7 +54,7 @@ class NewsCell: UITableViewCell {
     }
     
     private func setupCell(){
-        [title, discription, image , time, source].forEach {
+        [title, discription, image , date, source].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -79,11 +79,11 @@ class NewsCell: UITableViewCell {
             image.widthAnchor.constraint(equalToConstant: 100),
 
             
-            time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
-            time.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
-            time.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            time.leadingAnchor.constraint(equalTo: source.trailingAnchor, constant: 10),
-            time.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            date.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
+            date.topAnchor.constraint(equalTo: discription.bottomAnchor, constant: 10),
+            date.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            date.leadingAnchor.constraint(equalTo: source.trailingAnchor, constant: 10),
+            date.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
     
             source.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20),
             source.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
@@ -95,7 +95,7 @@ class NewsCell: UITableViewCell {
     func configure(cellSource: RSSItem){
         title.text = cellSource.title
         discription.text = cellSource.description
-        time.text = cellSource.pubData
+        date.text = cellSource.pubData
         image.image = cellSource.image
         source.text = cellSource.resource
         

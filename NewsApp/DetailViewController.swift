@@ -48,10 +48,12 @@ class DetailViewController: UIViewController {
     lazy var browserButton: UIButton = {
         var button = UIButton()
         button.addTarget(self, action: #selector(browserButtonTap), for: .touchUpInside)
-        button.setTitle("Перейти в браузер", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
+        button.setTitle("Перейти в браузер ", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
         button.layer.cornerRadius = 15
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.black.cgColor
         return button
     }()
     
@@ -90,6 +92,7 @@ class DetailViewController: UIViewController {
         }
     }
     
+    //MARK: - BrowserButtonTap
     @objc func browserButtonTap(){
         guard let urladdress = storeUrlForBrowser else { return }
         if let url = URL(string: urladdress ) {
@@ -147,7 +150,7 @@ extension DetailViewController {
             browserButton.topAnchor.constraint(equalTo: discriptionNews.bottomAnchor, constant: 20),
             browserButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             browserButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            browserButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            browserButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
             browserButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             browserButton.heightAnchor.constraint(equalToConstant: 50),
             

@@ -64,19 +64,43 @@
 		B0DCB6B22C10465500F9EE1E /* NewsApp */ = {
 			isa = PBXGroup;
 			children = (
+				B0E72D6F2C1AC4D500F09B6E /* Model */,
+				B0E72D712C1AC50300F09B6E /* ViewModel */,
+				B0E72D702C1AC4E800F09B6E /* View */,
 				B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */,
 				B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */,
-				B02F13582C1857CF009BF49D /* Model.swift */,
 				B0DCB6D42C11962700F9EE1E /* XMLParser.swift */,
 				B0DCB6B72C10465500F9EE1E /* ViewController.swift */,
 				B0DCB6D22C106A7600F9EE1E /* DetailViewController.swift */,
 				B0DCB6CC2C1049F600F9EE1E /* NewsCell.swift */,
-				B0DCB6BF2C10465800F9EE1E /* Assets.xcassets */,
 				B0DCB6C12C10465800F9EE1E /* LaunchScreen.storyboard */,
+				B0DCB6BF2C10465800F9EE1E /* Assets.xcassets */,
 				B0DCB6C42C10465800F9EE1E /* Info.plist */,
 				B0DCB6BC2C10465500F9EE1E /* NewsApp.xcdatamodeld */,
 			);
 			path = NewsApp;
+			sourceTree = "<group>";
+		};
+		B0E72D6F2C1AC4D500F09B6E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B02F13582C1857CF009BF49D /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B0E72D702C1AC4E800F09B6E /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B0E72D712C1AC50300F09B6E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -28,7 +28,7 @@ struct NewsResource {
             "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
             "https://news.rambler.ru/rss/world/",
             "https://www.mk.ru/rss/index.xml",
-            "https://www.kommersant.ru/RSS/ogoniok.xml",
+            "https://www.kommersant.ru/RSS/news.xml",
 //            "https://ria.ru/export/rss2/archive/index.xml"
         ]
         return links
