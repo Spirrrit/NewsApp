@@ -59,6 +59,7 @@ class DetailViewController: UIViewController {
     
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
+        
         titleNews.text = source.title
         if source.image !== UIImage(named: "icon") {
             imageNews.image = source.image
@@ -66,7 +67,7 @@ class DetailViewController: UIViewController {
             imageNews.image = nil
         }
         discriptionNews.text = source.description
-        dateNews.text = source.pubData
+        dateNews.text = source.pubData.toRusString
         storeUrlForBrowser = source.link
         
     }
@@ -96,11 +97,10 @@ class DetailViewController: UIViewController {
     @objc func browserButtonTap(){
         guard let urladdress = storeUrlForBrowser else { return }
         if let url = URL(string: urladdress ) {
+            print(url)
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-    }
-    
-    
+    } 
 }
 
 //MARK: - SetupUI

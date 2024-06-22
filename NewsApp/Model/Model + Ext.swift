@@ -11,7 +11,7 @@ import UIKit
 struct RSSItem {
     var title: String
     var description: String
-    var pubData: String
+    var pubData: Date
     var image: UIImage?
     var resource: String
     var link: String
@@ -24,6 +24,16 @@ enum SourceNews: String {
     case ria = "РИА Новости"
     case none = "Ресурс"
 }
+
+extension Date {
+    var toRusString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        dateFormatter.setLocalizedDateFormatFromTemplate("E, dd MMMM HH:mm")
+        return dateFormatter.string(from: self)
+    }
+}
+
 //struct NewsResource {
 //    static func getSourceLink() -> [String]{
 //        let links = [

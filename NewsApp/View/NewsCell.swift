@@ -63,12 +63,10 @@ class NewsCell: UITableViewCell {
         NSLayoutConstraint.activate([
             
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-//            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             title.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             discription.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 5),
-//            discription.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             discription.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
             discription.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
@@ -95,7 +93,7 @@ class NewsCell: UITableViewCell {
     func configure(cellSource: RSSItem){
         title.text = cellSource.title
         discription.text = cellSource.description
-        date.text = cellSource.pubData
+        date.text = cellSource.pubData.toRusString
         image.image = cellSource.image
         source.text = cellSource.resource
         

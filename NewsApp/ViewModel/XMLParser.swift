@@ -12,12 +12,13 @@ class FeedParser: NSObject, XMLParserDelegate {
     private var rssItems: [RSSItem] = []
     private var currentElement: String = ""
     private var currentImage: UIImage?
-    private var sourceNews: String = ""
+    private var currentResource: String = ""
     
     private var currentTitle: String = "" {
         didSet {
             currentTitle = currentTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             currentTitle = currentTitle.replacingOccurrences(of: "//", with: ".")
+            currentTitle = currentTitle.replacingOccurrences(of: "&#34;", with: "'")
         }
     }
     private var currentDescription: String = "" {
@@ -34,29 +35,26 @@ class FeedParser: NSObject, XMLParserDelegate {
     private var currentpubDate: String = "" {
         didSet {
             currentpubDate = currentpubDate.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            currentpubDate = currentpubDate.replacingOccurrences(of: "+0300", with: "")
-            currentpubDate = currentpubDate.replacingOccurrences(of: "Mon", with: "Пон").replacingOccurrences(of: "Tue", with: "Вт").replacingOccurrences(of: "Wed", with: "Ср").replacingOccurrences(of: "Thu", with: "Чт").replacingOccurrences(of: "Fri", with: "Пт").replacingOccurrences(of: "Sat", with: "Сб").replacingOccurrences(of: "Sun", with: "Вс")
-            currentpubDate = currentpubDate.replacingOccurrences(of: "Jan", with: "Янв").replacingOccurrences(of: "Feb", with: "Фев").replacingOccurrences(of: "Mar", with: "Мар").replacingOccurrences(of: "Apr", with: "Апр").replacingOccurrences(of: "May", with: "Мая").replacingOccurrences(of: "Jun", with: "Июн").replacingOccurrences(of: "Jul", with: "Июл").replacingOccurrences(of: "Aug", with: "Авг").replacingOccurrences(of: "Sep", with: "Сен").replacingOccurrences(of: "Oc", with: "Окт").replacingOccurrences(of: "No", with: "Нояб").replacingOccurrences(of: "De", with: "Дек")
-            
-            
-        }
-    }
-    private var currentResource: String = "" {
-        didSet {
-            currentResource = currentResource.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
     
-    private var currentLink: String = ""
+    
+    private var currentLink: String = "" {
+        didSet {
+            currentLink = currentLink.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
+    }
+    
+    
+    
     private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
-    func parseFeed(url: [String], resource: SourceNews , completionHandler:(([RSSItem]) -> Void)?){
+    func parseFeed(url: String, resource: SourceNews , completionHandler:(([RSSItem]) -> Void)?){
         
         self.parserCompletionHandler = completionHandler
-        self.sourceNews = resource.rawValue
+        self.currentResource = resource.rawValue
         
-        for i in url {
-            let request = URLRequest(url: URL(string: i)!)
+            let request = URLRequest(url: URL(string: url)!)
             let urlSession = URLSession.shared
             let task = urlSession.dataTask(with: request) { (data, response, error) in
                 guard let data = data else {
@@ -68,17 +66,25 @@ class FeedParser: NSObject, XMLParserDelegate {
                 let parser = XMLParser(data: data)
                 parser.delegate = self
                 parser.parse()
+
             }
             task.resume()
-        }
+        
     }
     
+    //MARK: - Auxiliary Functions
     func getImage(str: String) -> UIImage? {
         let url = URL(string: str)
         if let data = try? Data(contentsOf: url!){
             return UIImage(data: data)
         }
         return UIImage(named: "icon")
+    }
+    
+    func strToDate(_ stringDate: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E, d MM yyyy HH:mm:ss Z"
+        return dateFormatter.date(from: stringDate)
     }
     
     //MARK: - Parser Delegate
@@ -89,9 +95,15 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentTitle = ""
             currentDescription = ""
             currentpubDate = ""
-            currentResource = ""
-            currentImage = UIImage(named: "icon")
             currentLink = ""
+            currentImage = UIImage(named: "icon")
+            
+        }
+        
+        if currentElement == "enclosure" {
+            let attrsUrl = attributeDict as [String: NSString]
+            let urlPic = attrsUrl["url"]
+            currentImage = getImage(str: urlPic! as String)
         }
     }
     
@@ -99,22 +111,24 @@ class FeedParser: NSObject, XMLParserDelegate {
         switch currentElement {
         case "title": currentTitle += string
         case "description": currentDescription += string
-//        case "pdalink": currentLink += string
-        case "link": currentLink += string
         case "rbc_news:full-text": currentDescription += string
+        case "link": currentLink += string
         case "pubDate": currentpubDate += string
         case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(named: "icon")
         default: break
         }
+        
+
     }
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
-            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: currentpubDate, image: currentImage, resource: sourceNews, link: currentLink)
+            let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: strToDate(currentpubDate) ?? Date(), image: currentImage, resource: currentResource, link: currentLink)
             self.rssItems.append(rssItem)
         }
     }
     func parserDidEndDocument(_ parser: XMLParser) {
         parserCompletionHandler?(rssItems)
+
     }
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: any Error) {
         print(parseError.localizedDescription)
