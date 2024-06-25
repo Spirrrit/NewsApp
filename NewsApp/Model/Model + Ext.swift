@@ -25,6 +25,11 @@ enum SourceNews: String {
     case none = "Ресурс"
 }
 
+struct TransformeString {
+    static func transformationString(_ str: String) -> String{
+        return str.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "&laquo;", with: "«").replacingOccurrences(of: "&raquo;", with: "»").replacingOccurrences(of: "&nbsp;", with: " ").replacingOccurrences(of: "<p>", with: "\n").replacingOccurrences(of: "</p>", with: "\n").replacingOccurrences(of: "&mdash;", with: " — ").replacingOccurrences(of: "&ndash;", with: " — ").replacingOccurrences(of: "&lt;", with: "<").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: "&hellip;", with: "...").replacingOccurrences(of: "&euro;", with: "€").replacingOccurrences(of: "//", with: ".").replacingOccurrences(of: "&#34;", with: "'")
+    }
+}
 extension Date {
     var toRusString: String {
         let dateFormatter = DateFormatter()
@@ -46,3 +51,4 @@ extension Date {
 //        return links
 //    }
 //}
+

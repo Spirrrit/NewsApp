@@ -13,23 +13,16 @@ class FeedParser: NSObject, XMLParserDelegate {
     private var currentElement: String = ""
     private var currentImage: UIImage?
     private var currentResource: String = ""
+    private var parserCompletionHandler: (([RSSItem]) -> Void)?
     
     private var currentTitle: String = "" {
         didSet {
-            currentTitle = currentTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            currentTitle = currentTitle.replacingOccurrences(of: "//", with: ".")
-            currentTitle = currentTitle.replacingOccurrences(of: "&#34;", with: "'")
+            currentTitle = TransformeString.transformationString(currentTitle)
         }
     }
     private var currentDescription: String = "" {
         didSet {
-            currentDescription = currentDescription.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            currentDescription = currentDescription.replacingOccurrences(of: "&laquo;", with: "«").replacingOccurrences(of: "&raquo;", with: "»")
-            currentDescription = currentDescription.replacingOccurrences(of: "&nbsp;", with: " ")
-            currentDescription = currentDescription.replacingOccurrences(of: "<p>", with: "\n").replacingOccurrences(of: "</p>", with: "\n")
-            currentDescription = currentDescription.replacingOccurrences(of: "&mdash;", with: " — ").replacingOccurrences(of: "&ndash;", with: " — ")
-            currentDescription = currentDescription.replacingOccurrences(of: "&lt;", with: "<").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: "&hellip;", with: "...")
-            currentDescription = currentDescription.replacingOccurrences(of: "&euro;", with: "€")
+            currentDescription = TransformeString.transformationString(currentDescription)
         }
     }
     private var currentpubDate: String = "" {
@@ -37,23 +30,16 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = currentpubDate.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
-    
-    
     private var currentLink: String = "" {
         didSet {
             currentLink = currentLink.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
-    
-    
-    
-    private var parserCompletionHandler: (([RSSItem]) -> Void)?
-    
+
     func parseFeed(url: String, resource: SourceNews , completionHandler:(([RSSItem]) -> Void)?){
         
         self.parserCompletionHandler = completionHandler
-        self.currentResource = resource.rawValue
-        
+
             let request = URLRequest(url: URL(string: url)!)
             let urlSession = URLSession.shared
             let task = urlSession.dataTask(with: request) { (data, response, error) in
@@ -65,11 +51,10 @@ class FeedParser: NSObject, XMLParserDelegate {
                 }
                 let parser = XMLParser(data: data)
                 parser.delegate = self
+                self.currentResource = resource.rawValue
                 parser.parse()
-
             }
             task.resume()
-        
     }
     
     //MARK: - Auxiliary Functions
@@ -97,7 +82,6 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = ""
             currentLink = ""
             currentImage = UIImage(named: "icon")
-            
         }
         
         if currentElement == "enclosure" {
@@ -117,9 +101,8 @@ class FeedParser: NSObject, XMLParserDelegate {
         case "rbc_news:url": currentImage = getImage(str: string) ?? UIImage(named: "icon")
         default: break
         }
-        
-
     }
+    
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
             let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: strToDate(currentpubDate) ?? Date(), image: currentImage, resource: currentResource, link: currentLink)

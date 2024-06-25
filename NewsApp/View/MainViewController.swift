@@ -12,6 +12,7 @@ class MainViewController: UIViewController {
     private var rssItems: [RSSItem]?
     let tableView: UITableView = .init()
     
+    //MARK: - Lifi cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -22,26 +23,23 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         fetchData()
-        
     }
     
     //MARK: - Load Data
+    // попробовать вынести функцию в ViewModel ???
     
     private func fetchData() {
         let feedParser = FeedParser()
         let queue = DispatchQueue(label: "Load News", attributes: .concurrent)
-        
-        
+    
         queue.async {
             feedParser.parseFeed(url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss", resource: .rbk) { (rssItem) in
                 self.rssItems = rssItem
                 OperationQueue.main.addOperation {
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    self.tableView.reloadData()
                 }
             }
-            print("РБК")
         }
         queue.async {
             feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/", resource: .rambler) { (rssItem) in
@@ -49,10 +47,8 @@ class MainViewController: UIViewController {
                 OperationQueue.main.addOperation {
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    self.tableView.reloadData()
                 }
             }
-            print("РАМБЛЕР")
         }
         queue.async {
             feedParser.parseFeed(url: "https://www.mk.ru/rss/index.xml", resource: .mk) { (rssItem) in
@@ -61,10 +57,8 @@ class MainViewController: UIViewController {
                     
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    self.tableView.reloadData()
                 }
             }
-            print("МК")
         }
         queue.async {
             feedParser.parseFeed(url: "https://www.kommersant.ru/RSS/news.xml", resource: .komersant) { (rssItem) in
@@ -72,10 +66,8 @@ class MainViewController: UIViewController {
                 OperationQueue.main.addOperation {
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    self.tableView.reloadData()
                 }
             }
-            print("Комерсант")
         }
         queue.async {
             feedParser.parseFeed(url: "https://ria.ru/export/rss2/archive/index.xml", resource: .ria) { (rssItem) in
@@ -83,25 +75,9 @@ class MainViewController: UIViewController {
                 OperationQueue.main.addOperation {
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-//                    self.tableView.reloadData()
                 }
             }
-            print("Риа")
         }
-    }
-}
-
-extension MainViewController {
-    func setupTableView(){
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
     }
 }
 
@@ -134,3 +110,17 @@ extension MainViewController: UITableViewDataSource {
     }
 }
 
+//MARK: - Extensions
+extension MainViewController {
+    func setupTableView(){
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+}

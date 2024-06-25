@@ -57,6 +57,7 @@ class DetailViewController: UIViewController {
         return button
     }()
     
+    //MARK: - Init
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
         
@@ -69,7 +70,6 @@ class DetailViewController: UIViewController {
         discriptionNews.text = source.description
         dateNews.text = source.pubData.toRusString
         storeUrlForBrowser = source.link
-        
     }
     
     required init?(coder: NSCoder) {
@@ -80,7 +80,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self , action: #selector(shareButton))
     }
     
@@ -153,8 +152,6 @@ extension DetailViewController {
             browserButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
             browserButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             browserButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            
         ])
     }
 }
