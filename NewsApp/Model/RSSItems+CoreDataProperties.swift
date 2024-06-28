@@ -13,18 +13,12 @@ import CoreData
 public class RSSItems: NSManagedObject {}
 
 extension RSSItems {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<RSSItems> {
-        return NSFetchRequest<RSSItems>(entityName: "RSSItems")
-    }
-
     @NSManaged public var rssLink: String?
     @NSManaged public var rssResource: String?
     @NSManaged public var rssImage: String?
-    @NSManaged public var rsspubData: Date?
+    @NSManaged public var rssPubData: Date
     @NSManaged public var rssDescription: String?
     @NSManaged public var rssTitle: String?
-
 }
 
 extension RSSItems : Identifiable {}

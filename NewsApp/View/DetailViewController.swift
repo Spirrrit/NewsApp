@@ -10,6 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     private var rssItems: [RSSItem]?
+    private var rssItemsForCoreData: [RSSItems]?
     private var storeUrlForBrowser: String?
     private lazy var scrollView = UIScrollView()
     
@@ -58,6 +59,19 @@ class DetailViewController: UIViewController {
     }()
     
     //MARK: - Init
+    
+    //  CoreData
+    
+    init(withCoreData source: RSSItems){
+        super.init(nibName: nil, bundle: nil)
+        
+        titleNews.text = source.rssTitle
+        imageNews.image = SupportFunc.getImage(str: source.rssImage!)
+        discriptionNews.text = source.rssDescription
+        dateNews.text = source.rssPubData.toRusString
+        storeUrlForBrowser = source.rssLink
+    }
+    
     init(with source: RSSItem){
         super.init(nibName: nil, bundle: nil)
         
@@ -71,6 +85,7 @@ class DetailViewController: UIViewController {
         dateNews.text = source.pubData.toRusString
         storeUrlForBrowser = source.link
     }
+        
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -155,3 +170,4 @@ extension DetailViewController {
         ])
     }
 }
+

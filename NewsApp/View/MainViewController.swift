@@ -10,19 +10,53 @@ import UIKit
 class MainViewController: UIViewController {
 
     private var rssItems: [RSSItem]?
+    private var rssItemsForCoreData: [RSSItems]?
     let tableView: UITableView = .init()
+    let refreshControlData = UIRefreshControl()
     
     //MARK: - Lifi cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Главная"
-        
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         tableView.delegate = self
         tableView.dataSource = self
         setupTableView()
         fetchData()
+        coreDataLoad()
+        tableView.refreshControl = refreshControlData
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(removeData))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(updateData))
+        refreshControlData.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    @objc  func refreshData(sender: UIRefreshControl) {
+        refreshControlData.endRefreshing()
+    }
+    
+    @objc func removeData() {
+        CoreDataManager.shared.deletaAllRssItems()
+        rssItems?.removeAll()
+        self.tableView.reloadData()
+    }
+    @objc func updateData() {
+        CoreDataManager.shared.deletaAllRssItems()
+        rssItems?.removeAll()
+        fetchData()
+        self.tableView.reloadData()
+    }
+    
+    func coreDataLoad(){
+        let queue = DispatchQueue(label: "CoreDataLoad", attributes: .concurrent)
+        queue.async { [self] in
+            self.rssItemsForCoreData = CoreDataManager.shared.fetchRssItems()
+        }
     }
     
     //MARK: - Load Data
@@ -31,7 +65,7 @@ class MainViewController: UIViewController {
     private func fetchData() {
         let feedParser = FeedParser()
         let queue = DispatchQueue(label: "Load News", attributes: .concurrent)
-    
+        
         queue.async {
             feedParser.parseFeed(url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss", resource: .rbk) { (rssItem) in
                 self.rssItems = rssItem
@@ -41,6 +75,7 @@ class MainViewController: UIViewController {
                 }
             }
         }
+        
         queue.async {
             feedParser.parseFeed(url: "https://news.rambler.ru/rss/world/", resource: .rambler) { (rssItem) in
                 self.rssItems = rssItem
@@ -83,21 +118,61 @@ class MainViewController: UIViewController {
 
 //MARK: - TableView Delegate
 extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let detail = rssItems?[indexPath.item] {
-                navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            if let detail = rssItems?[indexPath.item] {
+                    navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
+            } else {
+                if let detailCore = rssItemsForCoreData?[indexPath.item] {
+                        navigationController?.pushViewController(DetailViewController(withCoreData: detailCore), animated: true)
+                }
+            }
         }
-    }
+    
+    // CoreData
+    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if let detail = rssItemsForCoreData?[indexPath.item] {
+//            navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
+//        }
+//    }
 }
-
-//MARK: - TableView DataSourse
+    
+    //MARK: - TableView DataSourse
+    
+    // CoreData
+    
+//    extension MainViewController: UITableViewDataSource {
+//        
+//        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//            guard let rssItemsForCoreDatas = rssItemsForCoreData else { return 0 }
+//
+//            return rssItemsForCoreDatas.count
+//            
+//        }
+//        
+//        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell else { fatalError("Non cell") }
+//            
+//            if let item = rssItemsForCoreData?[indexPath.item] {
+//                cell.configureCoreDataCell(cellSource: item)
+//            }
+//            
+//            return cell
+//        }
+//    }
+    
+    
 extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let rssItems = rssItems else {
-            return 0
+//        guard let rssItems = rssItems else { return rssItemsForCoreData?.count ?? 0 }
+//        return rssItems.count
+        
+        if let rssItems = rssItems {
+            return rssItems.count
+        } else {
+            return rssItemsForCoreData?.count ?? 0
         }
-        return rssItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,22 +180,28 @@ extension MainViewController: UITableViewDataSource {
         
         if let item = rssItems?[indexPath.item] {
             cell.configure(cellSource: item)
+        } else {
+            if let itemCore = rssItemsForCoreData?[indexPath.item]{
+                
+                rssItemsForCoreData?.sort(by: {$0.rssPubData > $1.rssPubData })
+                cell.configureCoreDataCell(cellSource: itemCore)
+            }
         }
         return cell
     }
 }
-
-//MARK: - Extensions
-extension MainViewController {
-    func setupTableView(){
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
+    
+    //MARK: - Extensions
+    extension MainViewController {
+        func setupTableView(){
+            view.addSubview(tableView)
+            tableView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                tableView.topAnchor.constraint(equalTo: view.topAnchor),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        }
     }
-}

@@ -39,6 +39,22 @@ extension Date {
     }
 }
 
+struct SupportFunc {
+    static func getImage(str: String) -> UIImage? {
+        guard let url = URL(string: str) else { return UIImage(named: "") }
+        if let data = try? Data(contentsOf: url){
+            return UIImage(data: data)
+        } 
+        return UIImage(named: "")
+    }
+    
+    static func strToDate(_ stringDate: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E, d MM yyyy HH:mm:ss Z"
+        return dateFormatter.date(from: stringDate) ?? Date()
+    }
+}
+
 //struct NewsResource {
 //    static func getSourceLink() -> [String]{
 //        let links = [

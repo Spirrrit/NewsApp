@@ -97,5 +97,15 @@ class NewsCell: UITableViewCell {
         source.text = cellSource.resource
         
     }
+    // CoreData
+    func configureCoreDataCell(cellSource: RSSItems){
+        title.text = cellSource.rssTitle
+        discription.text = cellSource.rssDescription
+        date.text = cellSource.rssPubData.toRusString 
+        source.text = cellSource.rssResource
+        image.image = SupportFunc.getImage(str: cellSource.rssImage ?? "")
+        
+    }
+    
     
 }

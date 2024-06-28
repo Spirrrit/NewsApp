@@ -10,6 +10,7 @@ import UIKit
 
 class FeedParser: NSObject, XMLParserDelegate {
     private var rssItems: [RSSItem] = []
+    private var rssItemsCoreData: [RSSItems] = []
     private var currentElement: String = ""
     private var currentImage: UIImage?
     private var currentResource: String = ""
@@ -30,6 +31,13 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = currentpubDate.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
+    
+    private var currentImageLink: String = "" {
+        didSet {
+            currentImageLink = currentImageLink.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
+    }
+    
     private var currentLink: String = "" {
         didSet {
             currentLink = currentLink.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -82,11 +90,13 @@ class FeedParser: NSObject, XMLParserDelegate {
             currentpubDate = ""
             currentLink = ""
             currentImage = UIImage(named: "icon")
+            currentImageLink = ""
         }
         
         if currentElement == "enclosure" {
             let attrsUrl = attributeDict as [String: NSString]
             let urlPic = attrsUrl["url"]
+            currentImageLink = urlPic! as String
             currentImage = getImage(str: urlPic! as String)
         }
     }
@@ -106,6 +116,10 @@ class FeedParser: NSObject, XMLParserDelegate {
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
             let rssItem = RSSItem(title: currentTitle, description: currentDescription, pubData: strToDate(currentpubDate) ?? Date(), image: currentImage, resource: currentResource, link: currentLink)
+            
+            // Запись в CodeData
+            
+            CoreDataManager.shared.createRssItems(title: currentTitle, discription: currentDescription, date: strToDate(currentpubDate) ?? Date(), image: currentImageLink, resource: currentResource, link: currentLink)
             self.rssItems.append(rssItem)
         }
     }

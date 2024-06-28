@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		B02F13592C1857CF009BF49D /* Model + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F13582C1857CF009BF49D /* Model + Ext.swift */; };
+		B06D77272C2BE8A300BFAD2B /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B06D77252C2BE8A300BFAD2B /* CoreData.xcdatamodeld */; };
+		B06D772F2C2BEA5800BFAD2B /* RSSItems+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D772D2C2BEA5800BFAD2B /* RSSItems+CoreDataProperties.swift */; };
+		B06D77312C2BEAF100BFAD2B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D77302C2BEAF100BFAD2B /* CoreDataManager.swift */; };
 		B0DCB6B42C10465500F9EE1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */; };
 		B0DCB6B62C10465500F9EE1E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */; };
 		B0DCB6B82C10465500F9EE1E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DCB6B72C10465500F9EE1E /* MainViewController.swift */; };
@@ -21,6 +24,9 @@
 
 /* Begin PBXFileReference section */
 		B02F13582C1857CF009BF49D /* Model + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model + Ext.swift"; sourceTree = "<group>"; };
+		B06D77262C2BE8A300BFAD2B /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
+		B06D772D2C2BEA5800BFAD2B /* RSSItems+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSSItems+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B06D77302C2BEAF100BFAD2B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		B0DCB6B02C10465500F9EE1E /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0DCB6B32C10465500F9EE1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0DCB6B52C10465500F9EE1E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +95,9 @@
 			isa = PBXGroup;
 			children = (
 				B02F13582C1857CF009BF49D /* Model + Ext.swift */,
+				B06D772D2C2BEA5800BFAD2B /* RSSItems+CoreDataProperties.swift */,
+				B06D77302C2BEAF100BFAD2B /* CoreDataManager.swift */,
+				B06D77252C2BE8A300BFAD2B /* CoreData.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,8 +190,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B06D772F2C2BEA5800BFAD2B /* RSSItems+CoreDataProperties.swift in Sources */,
 				B0DCB6D52C11962700F9EE1E /* XMLParser.swift in Sources */,
+				B06D77312C2BEAF100BFAD2B /* CoreDataManager.swift in Sources */,
 				B0DCB6B82C10465500F9EE1E /* MainViewController.swift in Sources */,
+				B06D77272C2BE8A300BFAD2B /* CoreData.xcdatamodeld in Sources */,
 				B0DCB6B42C10465500F9EE1E /* AppDelegate.swift in Sources */,
 				B0DCB6BE2C10465500F9EE1E /* NewsApp.xcdatamodeld in Sources */,
 				B0DCB6CD2C1049F600F9EE1E /* NewsCell.swift in Sources */,
@@ -413,6 +425,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		B06D77252C2BE8A300BFAD2B /* CoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B06D77262C2BE8A300BFAD2B /* CoreData.xcdatamodel */,
+			);
+			currentVersion = B06D77262C2BE8A300BFAD2B /* CoreData.xcdatamodel */;
+			name = CoreData.xcdatamodeld;
+			path = /Users/slavavasilev/Desktop/NewsApp/NewsApp/Model/CoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		B0DCB6BC2C10465500F9EE1E /* NewsApp.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
