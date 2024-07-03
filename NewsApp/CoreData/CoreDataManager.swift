@@ -23,7 +23,7 @@ public final class CoreDataManager: NSObject {
     }
     
     //MARK: - Create
-    public func createRssItems(title: String,discription: String, date: Date, image: String, resource: String, link: String ) {
+    public func createRssItems(title: String,discription: String, date: Date, image: UIImage?, resource: String, link: String ) {
         guard let rssItemEntityDiscription = NSEntityDescription.entity(forEntityName: "RSSItems", in: context) else { return print("Failed to create a description")}
         let rssItems = RSSItems(entity: rssItemEntityDiscription, insertInto: context)
         rssItems.rssTitle = title
@@ -46,7 +46,7 @@ public final class CoreDataManager: NSObject {
     }
     
     //MARK: - Update
-    public func updateRssItems(_ title: String, _ discription: String, _ date: Date,_ image: String,_ resource: String, _ link: String ){
+    public func updateRssItems(_ title: String, _ discription: String, _ date: Date,_ image: UIImage,_ resource: String, _ link: String ){
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "RSSItems")
         do {
             guard let rssItems = try? context.fetch(fetchRequest) as? [RSSItems],

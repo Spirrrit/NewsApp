@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="RSSItems" representedClassName="RSSItems" syncable="YES">
         <attribute name="rssDescription" optional="YES" attributeType="String"/>
-        <attribute name="rssImage" optional="YES" attributeType="String"/>
+        <attribute name="rssImage" optional="YES" attributeType="Transformable"/>
         <attribute name="rssLink" optional="YES" attributeType="String"/>
         <attribute name="rssPubData" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="rssResource" optional="YES" attributeType="String"/>

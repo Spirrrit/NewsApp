@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailVC: UIViewController {
     
     private var rssItems: [RSSItem]?
     private var rssItemsForCoreData: [RSSItems]?
@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         titleNews.text = source.rssTitle
-        imageNews.image = SupportFunc.getImage(str: source.rssImage!)
+        imageNews.image = source.rssImage
         discriptionNews.text = source.rssDescription
         dateNews.text = source.rssPubData.toRusString
         storeUrlForBrowser = source.rssLink
@@ -96,6 +96,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self , action: #selector(shareButton))
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     //MARK: - ShareButtonSetup
@@ -118,7 +119,7 @@ class DetailViewController: UIViewController {
 }
 
 //MARK: - SetupUI
-extension DetailViewController {
+extension DetailVC {
     func setupUI(){
         view.backgroundColor = .white
         

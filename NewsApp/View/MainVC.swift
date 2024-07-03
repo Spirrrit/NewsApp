@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainVC: UIViewController {
 
     private var rssItems: [RSSItem]?
     private var rssItemsForCoreData: [RSSItems]?
@@ -19,21 +19,25 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Главная"
+        
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControlData
+        
         setupTableView()
         fetchData()
         coreDataLoad()
-        tableView.refreshControl = refreshControlData
+        
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(removeData))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(updateData))
         refreshControlData.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     @objc  func refreshData(sender: UIRefreshControl) {
@@ -117,13 +121,13 @@ class MainViewController: UIViewController {
 }
 
 //MARK: - TableView Delegate
-extension MainViewController: UITableViewDelegate {
+extension MainVC: UITableViewDelegate {
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             if let detail = rssItems?[indexPath.item] {
-                    navigationController?.pushViewController(DetailViewController(with: detail), animated: true)
+                    navigationController?.pushViewController(DetailVC(with: detail), animated: true)
             } else {
                 if let detailCore = rssItemsForCoreData?[indexPath.item] {
-                        navigationController?.pushViewController(DetailViewController(withCoreData: detailCore), animated: true)
+                        navigationController?.pushViewController(DetailVC(withCoreData: detailCore), animated: true)
                 }
             }
         }
@@ -162,7 +166,7 @@ extension MainViewController: UITableViewDelegate {
 //    }
     
     
-extension MainViewController: UITableViewDataSource {
+extension MainVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        guard let rssItems = rssItems else { return rssItemsForCoreData?.count ?? 0 }
@@ -192,7 +196,7 @@ extension MainViewController: UITableViewDataSource {
 }
     
     //MARK: - Extensions
-    extension MainViewController {
+    extension MainVC {
         func setupTableView(){
             view.addSubview(tableView)
             tableView.translatesAutoresizingMaskIntoConstraints = false

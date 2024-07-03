@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 @objc(RSSItems)
 public class RSSItems: NSManagedObject {}
@@ -15,7 +16,7 @@ public class RSSItems: NSManagedObject {}
 extension RSSItems {
     @NSManaged public var rssLink: String?
     @NSManaged public var rssResource: String?
-    @NSManaged public var rssImage: String?
+    @NSManaged public var rssImage: UIImage?
     @NSManaged public var rssPubData: Date
     @NSManaged public var rssDescription: String?
     @NSManaged public var rssTitle: String?
