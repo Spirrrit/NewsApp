@@ -119,7 +119,7 @@ class FeedParser: NSObject, XMLParserDelegate {
             
             // Запись в CodeData
             
-            CoreDataManager.shared.createRssItems(title: currentTitle, discription: currentDescription, date: strToDate(currentpubDate) ?? Date(), image: currentImageLink, resource: currentResource, link: currentLink)
+//            CoreDataManager.shared.createRssItems(title: currentTitle, discription: currentDescription, date: strToDate(currentpubDate) ?? Date(), image: currentImage, resource: currentResource, link: currentLink)
             self.rssItems.append(rssItem)
         }
     }

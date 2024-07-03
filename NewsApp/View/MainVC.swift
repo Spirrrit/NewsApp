@@ -25,23 +25,35 @@ class MainVC: UIViewController {
         tableView.dataSource = self
         tableView.refreshControl = refreshControlData
         
+        
         setupTableView()
         fetchData()
         coreDataLoad()
         
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(removeData))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(updateData))
         refreshControlData.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshControlData.beginRefreshingManually()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+            self.refreshControlData.endRefreshing()
+        }
+        
     }
     
+    //MARK: - @objc funcs
+    
     @objc  func refreshData(sender: UIRefreshControl) {
-        refreshControlData.endRefreshing()
+//        fetchData()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            self.refreshControlData.endRefreshing()
+        }
     }
     
     @objc func removeData() {
@@ -49,14 +61,8 @@ class MainVC: UIViewController {
         rssItems?.removeAll()
         self.tableView.reloadData()
     }
-    @objc func updateData() {
-        CoreDataManager.shared.deletaAllRssItems()
-        rssItems?.removeAll()
-        fetchData()
-        self.tableView.reloadData()
-    }
     
-    func coreDataLoad(){
+    private func coreDataLoad(){
         let queue = DispatchQueue(label: "CoreDataLoad", attributes: .concurrent)
         queue.async { [self] in
             self.rssItemsForCoreData = CoreDataManager.shared.fetchRssItems()
@@ -93,7 +99,6 @@ class MainVC: UIViewController {
             feedParser.parseFeed(url: "https://www.mk.ru/rss/index.xml", resource: .mk) { (rssItem) in
                 self.rssItems = rssItem
                 OperationQueue.main.addOperation {
-                    
                     self.rssItems?.sort(by: { $0.pubData  > $1.pubData })
                     self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
                 }
@@ -209,3 +214,12 @@ extension MainVC: UITableViewDataSource {
             ])
         }
     }
+
+extension UIRefreshControl {
+    func beginRefreshingManually() {
+        if let scrollView = superview as? UIScrollView {
+            scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y - frame.height), animated: true)
+        }
+        beginRefreshing()
+    }
+}

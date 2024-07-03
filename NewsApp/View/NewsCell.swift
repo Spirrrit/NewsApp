@@ -103,7 +103,7 @@ class NewsCell: UITableViewCell {
         discription.text = cellSource.rssDescription
         date.text = cellSource.rssPubData.toRusString 
         source.text = cellSource.rssResource
-        image.image = SupportFunc.getImage(str: cellSource.rssImage ?? "")
+        image.image = cellSource.rssImage
         
     }
     

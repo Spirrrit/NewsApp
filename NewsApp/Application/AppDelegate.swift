@@ -26,11 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {
+        
+        ValueTransformer.setValueTransformer(UIImageTransformer(), forName: NSValueTransformerName("UIImageTransformer"))
+        
         let container = NSPersistentContainer(name: "CoreData")
         container.loadPersistentStores(completionHandler: { (discription, error) in
             if let error = error as NSError? {
                 print(error.localizedDescription)
             } else {
+            
                 print("DB urls -", discription.url?.absoluteString)
             }
         })

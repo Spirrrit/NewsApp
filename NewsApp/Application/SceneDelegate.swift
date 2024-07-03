@@ -17,9 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        let nav = UINavigationController(rootViewController: MainViewController())
+        let vc = TabBarController()
+//        vc.navigationController?.navigationBar.prefersLargeTitles = true
         
-        window?.rootViewController = nav
+        window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
 
